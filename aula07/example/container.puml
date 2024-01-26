@@ -1,0 +1,26 @@
+@startuml 
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(client, "Client", "Customer")
+
+System(frontend, "Frontend", "NextJS/Website")
+System_Ext(notification, "Google Notification", "E-mail system")
+ContainerDb(backendDb, "Backend Db", "MySQL/SQL")
+
+
+System_Boundary(backend, "Backend"){
+    Container(gateway, "API Gateway", "Kong")
+    Container(clientSystem, "Client System", "Manage clients")
+    Container(notificationSystem, "Notification System", "Adapter")
+
+    Rel(frontend, gateway, "Send requests", "HTTP")
+    Rel(gateway, clientSystem, "Repass")
+    Rel(clientSystem, notificationSystem, "Send notification", "HTTP")
+    Rel(clientSystem, backendDb, "JPA", "HTTP")
+
+    Rel(notificationSystem, notification, "Send notification", "HTTP")
+}
+
+Rel(client, frontend, "Access", "Web browser")
+Rel(notification, client, "Send email")
+

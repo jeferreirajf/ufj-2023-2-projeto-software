@@ -1,0 +1,19 @@
+@startuml 
+!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(client, "Client", "Customer")
+
+System(frontend, "Frontend", "NextJS/Website")
+System(backend, "Backend", "JAVA/Spring API")
+System_Ext(notification, "Google Notification", "E-mail system")
+
+ContainerDb(backendDb, "Backend Db", "MySQL/SQL")
+
+Rel(client, frontend, "Access", "Web browser")
+
+Rel(frontend, backend, "Requests", "HTTP")
+
+Rel(backend, backendDb, "JPA", "HTTP")
+Rel(backend, notification, "Send notification", "HTTP")
+
+Rel(notification, client, "Send email")
